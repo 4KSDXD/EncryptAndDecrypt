@@ -9,19 +9,17 @@ import java.util.Scanner;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 public class Encryptor {
 
+	static JFrame frame = new JFrame("Encryptor Program"); // Create Frame
 	static JButton quitButton = new JButton();
-	private Scanner scanner;
-	private ArrayList<Character> list;
-	private ArrayList<Character> shuffledList;
+	private static Scanner scanner;
+	private static ArrayList<Character> list;
+	private static ArrayList<Character> shuffledList;
 	private char character;
-	@SuppressWarnings("unused")
-	private String line;
-	private char[] letters;
-	@SuppressWarnings("unused")
-	private char[] secretLetters;
+	private static char[] letters;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Encryptor() {
@@ -41,7 +39,6 @@ public class Encryptor {
 	}
 
 	public static void createWindow() {
-		JFrame frame = new JFrame("Encryptor Program");
 
 		JButton encryptButton = new JButton();
 		JButton newKeyButton = new JButton();
@@ -72,11 +69,13 @@ public class Encryptor {
 
 		decryptButton.setText("Decrypt");
 		decryptButton.setFont(new Font("Arial", Font.BOLD, 10));
+		decryptButton.addActionListener(e -> decrypt());
+		decryptButton.addActionListener(e -> openDecryptionPane());
 
 		quitButton.setText("Quit");
 		quitButton.setFont(new Font("Arial", Font.BOLD, 10));
 		quitButton.addActionListener(e -> System.exit(0));
-		
+
 		getKeyButton.setText("Get Key");
 		getKeyButton.setFont(new Font("Arial", Font.BOLD, 10));
 
@@ -88,6 +87,15 @@ public class Encryptor {
 		decryptButton.setBounds(190, 120, 80, 30);
 		quitButton.setBounds(150, 180, 70, 30);
 		getKeyButton.setBounds(280, 120, 80, 30);
+	}
+
+	private static void openDecryptionPane() {
+		@SuppressWarnings("unused")
+		JOptionPane decryptPane = new JOptionPane();
+		@SuppressWarnings("unused")
+		String message = JOptionPane.showInputDialog(frame, "Enter a string to decrypt", "Decrypt",
+				JOptionPane.PLAIN_MESSAGE);
+
 	}
 
 	private void askUser() {
@@ -183,7 +191,7 @@ public class Encryptor {
 		}
 	}
 
-	private void decrypt() {
+	private static void decrypt() {
 		System.out.println("Enter a message to be decrypted");
 
 		String input = scanner.nextLine();

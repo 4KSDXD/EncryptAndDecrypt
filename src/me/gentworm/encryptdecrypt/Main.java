@@ -1,5 +1,4 @@
 package me.gentworm.encryptdecrypt;
-
 public class Main {
 	public static void main(String[] main) {		
 		
@@ -8,5 +7,6 @@ public class Main {
 		
 		@SuppressWarnings("unused")
 		Encryptor mainEncryptor = new Encryptor();
+		
 	}
 }
