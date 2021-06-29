@@ -69,12 +69,12 @@ public class Encryptor {
 
 		decryptButton.setText("Decrypt");
 		decryptButton.setFont(new Font("Arial", Font.BOLD, 10));
-		decryptButton.addActionListener(e -> decrypt());
 		decryptButton.addActionListener(e -> openDecryptionPane());
+		decryptButton.addActionListener(e -> decryptGUI());
 
 		quitButton.setText("Quit");
 		quitButton.setFont(new Font("Arial", Font.BOLD, 10));
-		quitButton.addActionListener(e -> System.exit(0));
+		quitButton.addActionListener(e -> quit());
 
 		getKeyButton.setText("Get Key");
 		getKeyButton.setFont(new Font("Arial", Font.BOLD, 10));
@@ -124,7 +124,7 @@ public class Encryptor {
 					break;
 
 				case 'Q':
-					stop();
+					quit();
 					break;
 
 				default:
@@ -214,9 +214,32 @@ public class Encryptor {
 		}
 	}
 
-	private void stop() {
+	private static void decryptGUI() {
+		System.out.println("Enter a message to be decrypted");
 
-		System.out.println("Have a nice day!");
+		String input = JOptionPane.showInputDialog(frame, "Enter a string to decrypt", "Decrypt",
+				JOptionPane.PLAIN_MESSAGE);
+
+		letters = input.toCharArray();
+
+		for (int i = 0; i < letters.length; i++) {
+			for (int j = 0; j < shuffledList.size(); j++) {
+				if (letters[i] == shuffledList.get(j)) {
+					letters[i] = list.get(j);
+					break;
+				}
+			}
+		}
+
+		System.out.println("Decrypted: ");
+		for (char x : letters) {
+			System.out.print(x);
+		}
+	}
+
+	private static void quit() {
+
+		System.out.println("\nHave a nice day!");
 		System.exit(0);
 	}
 }

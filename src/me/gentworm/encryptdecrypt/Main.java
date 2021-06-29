@@ -4,7 +4,6 @@ public class Main {
 		
 		Encryptor.createWindow();
 
-		
 		@SuppressWarnings("unused")
 		Encryptor mainEncryptor = new Encryptor();
 		
