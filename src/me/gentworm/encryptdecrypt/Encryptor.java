@@ -2,6 +2,9 @@ package me.gentworm.encryptdecrypt;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
@@ -10,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 public class Encryptor {
 
@@ -18,6 +22,10 @@ public class Encryptor {
 	private static Scanner scanner;
 	private static ArrayList<Character> list;
 	private static ArrayList<Character> shuffledList;
+	JButton encryptButton = new JButton();
+	JButton newKeyButton = new JButton();
+	JButton decryptButton = new JButton();
+	JButton getKeyButton = new JButton();
 	private char character;
 	private static char[] letters;
 
@@ -48,16 +56,16 @@ public class Encryptor {
 		JLabel label = new JLabel(); // Create label
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(400, 400);
+		frame.setSize(400, 500);
 		frame.setResizable(false);
-		frame.setLocationRelativeTo(null);
+		frame.setLocationRelativeTo(frame);
 		frame.setVisible(true);
-		frame.add(label);
+		frame.add(getKeyButton);
 		frame.add(encryptButton);
 		frame.add(newKeyButton);
 		frame.add(decryptButton);
 		frame.add(quitButton);
-		frame.add(getKeyButton);
+		frame.add(label);
 
 		label.setText("What would you like to do now?"); // Set text of label
 
@@ -72,21 +80,26 @@ public class Encryptor {
 		decryptButton.addActionListener(e -> openDecryptionPane());
 		decryptButton.addActionListener(e -> decryptGUI());
 
+		getKeyButton.setText("Get Key");
+		getKeyButton.setFont(new Font("Arial", Font.BOLD, 10));
+
 		quitButton.setText("Quit");
 		quitButton.setFont(new Font("Arial", Font.BOLD, 10));
 		quitButton.addActionListener(e -> quit());
 
-		getKeyButton.setText("Get Key");
-		getKeyButton.setFont(new Font("Arial", Font.BOLD, 10));
-
 		Dimension size = label.getPreferredSize();
-		label.setBounds(100, 70, size.width, size.height); // Set size of label finally
+		label.setBounds(50, 40, size.width, size.height); // Set size of label finally
 
 		encryptButton.setBounds(110, 120, 70, 30);
+
 		newKeyButton.setBounds(25, 120, 80, 30);
+
 		decryptButton.setBounds(190, 120, 80, 30);
+
 		quitButton.setBounds(150, 180, 70, 30);
+
 		getKeyButton.setBounds(280, 120, 80, 30);
+
 	}
 
 	private static void openDecryptionPane() {
@@ -214,11 +227,14 @@ public class Encryptor {
 		}
 	}
 
+	@SuppressWarnings("static-access")
 	private static void decryptGUI() {
 
 		System.out.println("Enter a message to be decrypted");
 
-		String input = JOptionPane.showInputDialog(frame, "Enter a message to be decrypted", "Decrypt",
+		JOptionPane pane = new JOptionPane();
+
+		String input = pane.showInputDialog(frame, "Enter a message to be decrypted", "Decrypt",
 				JOptionPane.PLAIN_MESSAGE);
 
 		letters = input.toCharArray();
@@ -234,11 +250,24 @@ public class Encryptor {
 
 		String str = new String(letters);
 
+		JButton button = new JButton();
+		button.setText("Copy");
+		button.setFont(new Font("Arial", Font.BOLD, 8));
+		button.setBounds(150, 180, 50, 20);
+
 		System.out.println("Decrypted: ");
 		for (char x : letters) {
 			System.out.print(x);
 		}
-		JOptionPane.showMessageDialog(frame, str);
+
+		UIManager.put("OptionPane.okButtonText", "Ok");
+		UIManager.put("OptionPane.okButtonText", "Copy");
+		pane.showMessageDialog(frame, "Decrypted Version: " + str);
+		StringSelection stringSelection = new StringSelection(str);
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		clipboard.setContents(stringSelection, null);
+		pane.add(button);
+		pane.remove(JOptionPane.DEFAULT_OPTION);
 	}
 
 	private static void quit() {
