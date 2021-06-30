@@ -24,7 +24,7 @@ public class Encryptor {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Encryptor() {
 
-		// Basic vars that are instantiated in the constructor
+		// Basic variables that are instantiated in the constructor
 		scanner = new Scanner(System.in);
 		list = new ArrayList();
 		shuffledList = new ArrayList();
@@ -215,9 +215,10 @@ public class Encryptor {
 	}
 
 	private static void decryptGUI() {
+
 		System.out.println("Enter a message to be decrypted");
 
-		String input = JOptionPane.showInputDialog(frame, "Enter a string to decrypt", "Decrypt",
+		String input = JOptionPane.showInputDialog(frame, "Enter a message to be decrypted", "Decrypt",
 				JOptionPane.PLAIN_MESSAGE);
 
 		letters = input.toCharArray();
@@ -231,10 +232,13 @@ public class Encryptor {
 			}
 		}
 
+		String str = new String(letters);
+
 		System.out.println("Decrypted: ");
 		for (char x : letters) {
 			System.out.print(x);
 		}
+		JOptionPane.showMessageDialog(frame, str);
 	}
 
 	private static void quit() {
