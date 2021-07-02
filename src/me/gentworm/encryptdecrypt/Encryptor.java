@@ -180,17 +180,17 @@ public class Encryptor {
 
 	private static void getKey() {
 		
-		JOptionPane.showMessageDialog(frame, list);
-		System.out.println("Key: ");
+		System.out.println("Current Key: ");
 		for (Character x : list) {
 			System.out.print(x);
-
 		}
 
-		System.out.println();
+		System.out.println("New Key: ");
 		for (Character x : shuffledList) {
 			System.out.print(x);
 		}
+		
+		JOptionPane.showMessageDialog(frame, shuffledList);
 
 		System.out.println();
 	}
