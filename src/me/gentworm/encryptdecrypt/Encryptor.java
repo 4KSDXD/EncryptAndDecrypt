@@ -17,7 +17,7 @@ import javax.swing.UIManager;
 
 public class Encryptor {
 
-	static JFrame frame = new JFrame("Encryptor Program"); // Create Frame
+	static JFrame frame = new JFrame("Encryptor Program-- By GentWorm"); // Create Frame
 	static JButton quitButton = new JButton();
 	private static Scanner scanner;
 	private static ArrayList<Character> list;
@@ -26,7 +26,7 @@ public class Encryptor {
 	JButton newKeyButton = new JButton();
 	JButton decryptButton = new JButton();
 	JButton getKeyButton = new JButton();
-	private char character;
+	private static char character;
 	private static char[] letters;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -56,7 +56,7 @@ public class Encryptor {
 		JLabel label = new JLabel(); // Create label
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(400, 500);
+		frame.setSize(400, 400);
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(frame);
 		frame.setVisible(true);
@@ -71,17 +71,19 @@ public class Encryptor {
 
 		encryptButton.setText("Encrypt");
 		encryptButton.setFont(new Font("Arial", Font.BOLD, 10));
+		encryptButton.addActionListener(e -> encryptGUI());
 
 		newKeyButton.setText("New Key");
 		newKeyButton.setFont(new Font("Arial", Font.BOLD, 10));
+		newKeyButton.addActionListener(e -> newKeyGUI());
 
 		decryptButton.setText("Decrypt");
 		decryptButton.setFont(new Font("Arial", Font.BOLD, 10));
-		decryptButton.addActionListener(e -> openDecryptionPane());
 		decryptButton.addActionListener(e -> decryptGUI());
 
 		getKeyButton.setText("Get Key");
 		getKeyButton.setFont(new Font("Arial", Font.BOLD, 10));
+		getKeyButton.addActionListener(e -> getKey());
 
 		quitButton.setText("Quit");
 		quitButton.setFont(new Font("Arial", Font.BOLD, 10));
@@ -99,15 +101,6 @@ public class Encryptor {
 		quitButton.setBounds(150, 180, 70, 30);
 
 		getKeyButton.setBounds(280, 120, 80, 30);
-
-	}
-
-	private static void openDecryptionPane() {
-		@SuppressWarnings("unused")
-		JOptionPane decryptPane = new JOptionPane();
-		@SuppressWarnings("unused")
-		String message = JOptionPane.showInputDialog(frame, "Enter a string to decrypt", "Decrypt",
-				JOptionPane.PLAIN_MESSAGE);
 
 	}
 
@@ -152,7 +145,7 @@ public class Encryptor {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void newKey() {
+	private static void newKey() {
 		character = ' ';
 		list.clear();
 		shuffledList.clear();
@@ -166,11 +159,32 @@ public class Encryptor {
 		Collections.shuffle(shuffledList);
 		System.out.println("A new key was just generated");
 	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private static void newKeyGUI() {
+		character = ' ';
+		list.clear();
+		shuffledList.clear();
 
-	private void getKey() {
+		for (int i = 32; i < 127; i++) {
+			list.add(Character.valueOf(character));
+			character++;
+		}
+
+		shuffledList = new ArrayList(list);
+		Collections.shuffle(shuffledList);
+		System.out.println("A new key was just generated");
+		JOptionPane.showMessageDialog(frame, "A new key was just generated");
+	}
+
+
+	private static void getKey() {
+		
+		JOptionPane.showMessageDialog(frame, list);
 		System.out.println("Key: ");
 		for (Character x : list) {
 			System.out.print(x);
+
 		}
 
 		System.out.println();
@@ -181,7 +195,7 @@ public class Encryptor {
 		System.out.println();
 	}
 
-	private void encrypt() {
+	private static void encrypt() {
 		System.out.println("Enter a message to be encrypted");
 
 		String input = scanner.nextLine();
@@ -202,6 +216,42 @@ public class Encryptor {
 		for (char x : letters) {
 			System.out.print(x);
 		}
+	}
+
+	@SuppressWarnings("static-access")
+	private static void encryptGUI() {
+
+		System.out.println("Enter a message to be encrypted");
+
+		JOptionPane pane = new JOptionPane();
+
+		String input = pane.showInputDialog(frame, "Enter a message to be encrypted", "Encrypt",
+				JOptionPane.PLAIN_MESSAGE);
+
+		letters = input.toCharArray();
+
+		for (int i = 0; i < letters.length; i++) {
+			for (int j = 0; j < list.size(); j++) {
+				if (letters[i] == list.get(j)) {
+					letters[i] = shuffledList.get(j);
+					break;
+				}
+			}
+		}
+		String str = new String(letters);
+
+		System.out.println("Encrypted: ");
+		for (char x : letters) {
+			System.out.print(x);
+		}
+
+		UIManager.put("OptionPane.okButtonText", "OK");
+		UIManager.put("OptionPane.okButtonText", "Copy to Clipboard");
+		pane.showMessageDialog(frame, "Encrypted: " + str);
+		StringSelection stringSelection = new StringSelection(str);
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		clipboard.setContents(stringSelection, null);
+		pane.remove(JOptionPane.DEFAULT_OPTION);
 	}
 
 	private static void decrypt() {
@@ -250,24 +300,19 @@ public class Encryptor {
 
 		String str = new String(letters);
 
-		JButton button = new JButton();
-		button.setText("Copy");
-		button.setFont(new Font("Arial", Font.BOLD, 8));
-		button.setBounds(150, 180, 50, 20);
-
 		System.out.println("Decrypted: ");
 		for (char x : letters) {
 			System.out.print(x);
 		}
 
-		UIManager.put("OptionPane.okButtonText", "Ok");
-		UIManager.put("OptionPane.okButtonText", "Copy");
-		pane.showMessageDialog(frame, "Decrypted Version: " + str);
+		UIManager.put("OptionPane.okButtonText", "OK");
+		UIManager.put("OptionPane.okButtonText", "Copy to Clipboard");
+		pane.showMessageDialog(frame, "Decrypted: " + str);
 		StringSelection stringSelection = new StringSelection(str);
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clipboard.setContents(stringSelection, null);
-		pane.add(button);
 		pane.remove(JOptionPane.DEFAULT_OPTION);
+
 	}
 
 	private static void quit() {
